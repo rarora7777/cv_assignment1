@@ -1,7 +1,5 @@
 function [m, count] = matchSIFT(fA, fB, numFeaturesA, numFeaturesB)
-%     numFeaturesA = size(fA, 2);
-%     numFeaturesB = size(fB, 2);
-    c_match_rel = 0.9;
+    c_match_rel = 0.6;
     
     c = 1;
     m = cell(min(numFeaturesA, numFeaturesB));
@@ -12,10 +10,6 @@ function [m, count] = matchSIFT(fA, fB, numFeaturesA, numFeaturesB)
         small2 = 128*256;
 
         index = 0;
-        
-%         if sqrt(sum(double(fA{i}.feature)))<20 || sqrt(sum(double(fA{i}.feature)))>51*120
-%             continue;
-%         end
         
         for j=1:numFeaturesB
             d = sqrt(sum((double(fA{i}.feature) - double(fB{j}.feature)).^2));
@@ -28,8 +22,8 @@ function [m, count] = matchSIFT(fA, fB, numFeaturesA, numFeaturesB)
                 end
             end
         end
-        
-        if(small < 10 && small < small2*c_match_rel && used(index)==0)
+%         small
+        if(small < 100 && small < small2*c_match_rel && used(index)==0)
             m{c} = [fA{i} fB{index}];
             used(index) = 1;
             c = c + 1;

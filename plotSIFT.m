@@ -1,4 +1,4 @@
-function plotSIFT(img1, img2, matching, mSize)
+function plotSIFT(img1, img2, matching, mSize, method)
 %     mSize = size(matching, 2);
     points1 = zeros(mSize, 2);
     points2 = zeros(mSize, 2);
@@ -9,5 +9,5 @@ function plotSIFT(img1, img2, matching, mSize)
     end
     
     figure;
-    showMatchedFeatures(rgb2gray(imread(img1)), rgb2gray(imread(img2)), points1, points2);
+    showMatchedFeatures(rgb2gray(imread(img1)), rgb2gray(imread(img2)), points1, points2, method);
 end
