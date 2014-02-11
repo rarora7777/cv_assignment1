@@ -29,7 +29,7 @@ function [m, count] = matchSIFT(fA, fB, numFeaturesA, numFeaturesB)
             end
         end
         
-        if(small < 100 && small < small2*c_match_rel && used(index)==0)
+        if(small < 10 && small < small2*c_match_rel && used(index)==0)
             m{c} = [fA{i} fB{index}];
             used(index) = 1;
             c = c + 1;

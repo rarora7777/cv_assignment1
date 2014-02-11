@@ -8,7 +8,7 @@ function [r, count] = getSIFTFeatureVectors(gss, points, c2, normG, atanG)
     r = cell(c2);
     
     for it=1:c2
-        fCount = 0;
+%         fCount = 0;
         h = zeros(n_hist, n_hist, n_ori);
         x_key = points{it}.x;
         y_key = points{it}.y;
@@ -57,8 +57,7 @@ function [r, count] = getSIFTFeatureVectors(gss, points, c2, normG, atanG)
                                 if abs(y_cent(j) - y_cap) <= 2*lambda_descr/n_hist
                                     for k=1:n_ori
                                         if mod(theta_cap - (2*pi)*(k-1)/n_ori, 2*pi) < 2*pi/n_ori
-                                            fCount = fCount + 1;
-                                            h(i, j, k) = h(i, j, k) + (1 - n_hist/(2*lambda_descr)*abs(x_cap - x_cent(i)))*(1 - n_hist/(2*lambda_descr)*abs(y_cap - y_cent(j)))*(1 - n_ori/(2*pi)*abs(mod(theta_cap - theta_key - (2*pi)*(k-1)/n_ori, 2*pi)))*1000*c_descr;
+                                            h(i, j, k) = h(i, j, k) + (1 - n_hist/(2*lambda_descr)*abs(x_cent(i) - x_cap))*(1 - n_hist/(2*lambda_descr)*abs(y_cent(j) - y_cap))*(1 - n_ori/(2*pi)*abs(mod(theta_cap - (2*pi)*(k-1)/n_ori, 2*pi)))*1000*c_descr;
                                         end
                                     end
                                 end
@@ -69,7 +68,6 @@ function [r, count] = getSIFTFeatureVectors(gss, points, c2, normG, atanG)
             end
         end
         
-        fCount
         f = zeros(1, n_hist*n_hist*n_ori);
         
         for i=1:n_hist
@@ -79,14 +77,11 @@ function [r, count] = getSIFTFeatureVectors(gss, points, c2, normG, atanG)
                 end
             end
         end
-        
-        fNorm = norm(f);
-        f = min(f, 0.2*fNorm);
-        
-        fNorm = norm(f);
-        f = f./fNorm;
-        
-        f = uint8(256.*f);
+
+        f = f./norm(f);
+        f = min(f, 0.2);
+        f = f./norm(f);
+        f = uint8(round(256*f));
         
         r{c} = struct('y', y_key, 'x', x_key, 'sigma', sigma_key, 'octave', o_key, 's', s_key, 'theta', theta_key, 'feature', f);
         c = c + 1;
