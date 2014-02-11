@@ -1,6 +1,6 @@
 function [r, count] = SIFT(imPath)
     img = imread(imPath);
-    gray  = im2double(rgb2gray(img));
+    gray  = im2double(histeq(rgb2gray(img)));
     gss = gaussianScaleSpace(gray);
     DoG = dogScaleSpace(gss);
     sft = getSIFTFeatures(DoG);
